@@ -137,6 +137,14 @@ Omnix-Tauri/
 
 ## Recent Changes
 
+### Standalone Repository (2026-09-07)
+
+The Tauri application was extracted from the Python repository with its
+directory-specific Git history intact. CI paths now assume this project is at
+the repository root. React state initialization was adjusted for the current
+hooks lint rules, Rust sources were formatted, and npm/Cargo lockfiles were
+refreshed to patched compatible dependency versions.
+
 ### CI + Dependency Fixes (2026-08-28, PR #220)
 
 The `omnix-tauri-ci.yml` workflow had been broken on every run since it was introduced: wrong action reference (`dtolnay/rust-toolchain@stable`, not the nonexistent `rust-action`), a `WindowConfig.label` type mismatch after a Tauri version bump (compare directly, it's `String` not `Option<String>` in the installed version), unused-variable TS6133 build failures in `App.tsx`, missing Linux system deps on `rust-check` (`libwebkit2gtk-4.1-dev`, `libxdo-dev` for enigo), and the Rust `tauri` crate pinned behind the npm `@tauri-apps/api` version (Tauri CLI refuses to build on a major.minor mismatch). All fixed and verified locally (`cargo check --locked`, `npx tauri build --no-bundle`, `npm run build`).
