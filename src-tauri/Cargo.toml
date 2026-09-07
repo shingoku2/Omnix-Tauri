@@ -25,6 +25,6 @@ sysinfo = "0.31"
 thiserror = "2"
 log = "0.4"
 uuid = { version = "1", features = ["v4"] }
-enigo = "0.2"
+enigo = "0.6"
 regex = "1"
 url = "2"
