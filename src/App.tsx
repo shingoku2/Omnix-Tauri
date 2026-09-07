@@ -146,23 +146,31 @@ function App() {
   const [gameStats] = useState<GameStats>({ kd: '—', match: '—', wins: '—' })
   const [settingsLoadError, setSettingsLoadError] = useState<string | null>(null)
   const [keybindSaveFeedback, setKeybindSaveFeedback] = useState<string | null>(null)
-  const [isOverlay, setIsOverlay] = useState(false)
+  const [isOverlay] = useState(() => {
+    try {
+      return getCurrentWindow().label === 'overlay'
+    } catch {
+      return false
+    }
+  })
   const [runningProcesses, setRunningProcesses] = useState<string[]>([])
   const [processPickerOpen, setProcessPickerOpen] = useState(false)
   const [processFilter, setProcessFilter] = useState('')
   const messageUnlistenRef = useRef<(() => void) | null>(null)
 
   useEffect(() => {
-    try {
-      const w = getCurrentWindow()
-      setIsOverlay(w.label === 'overlay')
-    } catch {
-      // not in Tauri (e.g. browser dev)
-    }
-  }, [])
-
-  useEffect(() => {
-    invoke<AppConfig>('get_config').then(setConfig).catch(console.error)
+    invoke<AppConfig>('get_config')
+      .then((c) => {
+        setConfig(c)
+        setSettingsForm((s) => ({
+          ...s,
+          model: c.ollama_model,
+          theme: c.theme,
+          opacity: c.overlay_opacity,
+          baseUrl: c.ollama_base_url || 'http://localhost:11434',
+        }))
+      })
+      .catch(console.error)
     invoke<GameInfo | null>('get_detected_game').then(setGame).catch(console.error)
     invoke<string[]>('list_ollama_models').then(setModels).catch(() => setModels([]))
     invoke<Macro[]>('get_macros').then(setMacros).catch(() => setMacros([]))
@@ -171,17 +179,6 @@ function App() {
     }, 5000)
     return () => clearInterval(interval)
   }, [])
-
-  useEffect(() => {
-    if (!config) return
-    setSettingsForm((s) => ({
-      ...s,
-      model: config.ollama_model,
-      theme: config.theme,
-      opacity: config.overlay_opacity,
-      baseUrl: config.ollama_base_url || 'http://localhost:11434',
-    }))
-  }, [config])
 
   const openSettings = (tab: SettingsTabIndex = 0) => {
     setSettingsTabIndex(tab)

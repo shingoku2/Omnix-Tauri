@@ -15,7 +15,8 @@ Omnix Gaming Companion rebuilt with **Rust** and **Tauri 2**. It uses the same u
 ## Setup
 
 ```bash
-cd omnix-tauri
+git clone https://github.com/shingoku2/Omnix-Tauri.git
+cd Omnix-Tauri
 npm install
 ```
 
@@ -96,5 +97,5 @@ See **[CLAUDE.md](./CLAUDE.md)** in this directory for an AI-oriented guide: arc
 
 ## Related
 
-- Legacy Python/PyQt6 Omnix: see repository root `README.md`, `CLAUDE.md`, and `AGENTS.md`.
-- CI: `.github/workflows/omnix-tauri-ci.yml` (Rust check, frontend build).
+- Python/PyQt6 Omnix: [Omnix All-knowing Gaming Companion](https://github.com/shingoku2/Omnix-All-knowing-gaming-companion).
+- CI: `.github/workflows/ci.yml` (Rust check, frontend build, and full Tauri build).

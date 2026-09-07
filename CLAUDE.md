@@ -1,6 +1,6 @@
 # CLAUDE.md – AI Assistant Guide for Omnix (Tauri)
 
-**Last Updated:** 2026-08-28
+**Last Updated:** 2026-09-07
 **Stack:** Tauri 2, Rust backend, Vite + React + TypeScript frontend
 **User Data:** `~/.gaming_ai_assistant` (Unix) / `%USERPROFILE%\.gaming_ai_assistant` (Windows)
 
@@ -36,7 +36,7 @@ Omnix is a desktop AI gaming companion rebuilt with **Rust** and **Tauri 2**. It
 ### Project Structure
 
 ```
-omnix-tauri/
+Omnix-Tauri/
 ├── src/                    # Frontend (Vite + React + TypeScript)
 │   ├── App.tsx             # Main UI: chat, game panel, settings panel, modals
 │   ├── App.css             # Neon/cyan theme, panels, modals
@@ -121,7 +121,7 @@ omnix-tauri/
 - **Prerequisites:** Node.js 20.19+ (or 22.12+), Rust (rustup), C++ build tools (Windows: VS Build Tools), Ollama.
 - **Dev:** `npm install` then `npm run tauri:dev` (Vite dev server + Tauri app).
 - **Build:** `npm run tauri:build`; output in `src-tauri/target/release/bundle/`.
-- **CI:** `.github/workflows/omnix-tauri-ci.yml` – rust-check (cargo check --locked), tauri-build (full `npx tauri build`), frontend-build (setup-node with npm cache, npm ci \|\| npm install, npm run build). Both Rust jobs install the Tauri Linux system deps (`libwebkit2gtk-4.1-dev`, `libxdo-dev`, etc.) needed to link.
+- **CI:** `.github/workflows/ci.yml` – rust-check (format and cargo check), frontend-build (lint and production build), and tauri-build (full `npm run tauri:build`). Both Rust jobs install the Tauri Linux system dependencies (`libwebkit2gtk-4.1-dev`, `libxdo-dev`, etc.) needed to link.
 
 ---
 
@@ -145,4 +145,4 @@ Also bumped devDependencies (React, Vite, ESLint, etc.) and ran `npm audit fix`;
 
 ---
 
-For the legacy Python Omnix codebase, see the repository root `CLAUDE.md` and `AGENTS.md`.
+The Python/PyQt6 edition is maintained separately in [Omnix All-knowing Gaming Companion](https://github.com/shingoku2/Omnix-All-knowing-gaming-companion).

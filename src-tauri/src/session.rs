@@ -7,7 +7,9 @@ const LOGS_DIR: &str = "logs";
 const SESSION_FILE: &str = "session.jsonl";
 
 fn log_path() -> PathBuf {
-    crate::config::AppConfig::config_dir().join(LOGS_DIR).join(SESSION_FILE)
+    crate::config::AppConfig::config_dir()
+        .join(LOGS_DIR)
+        .join(SESSION_FILE)
 }
 
 #[derive(Serialize)]

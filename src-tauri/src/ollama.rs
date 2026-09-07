@@ -24,7 +24,10 @@ impl OllamaClient {
     pub fn list_models(&self) -> Result<Vec<String>, String> {
         let client = reqwest::blocking::Client::new();
         let url = format!("{}/api/tags", self.base_url);
-        let resp = client.get(&url).send().map_err(|e: reqwest::Error| e.to_string())?;
+        let resp = client
+            .get(&url)
+            .send()
+            .map_err(|e: reqwest::Error| e.to_string())?;
         if !resp.status().is_success() {
             return Err(format!("Ollama returned {}", resp.status()));
         }

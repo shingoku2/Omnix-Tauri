@@ -26,7 +26,10 @@ impl GameDetector {
     pub fn new(config_dir: PathBuf) -> Self {
         let mut process_index = HashMap::new();
         let common_games: &[(&str, &[&str])] = &[
-            ("League of Legends", &["LeagueClientUx.exe", "League of Legends.exe"][..]),
+            (
+                "League of Legends",
+                &["LeagueClientUx.exe", "League of Legends.exe"][..],
+            ),
             ("Valorant", &["VALORANT.exe", "valorant.exe"][..]),
             ("Counter-Strike 2", &["cs2.exe", "csgo.exe"][..]),
             ("Dota 2", &["dota2.exe"][..]),
@@ -39,7 +42,10 @@ impl GameDetector {
             ("Baldur's Gate 3", &["bg3.exe"][..]),
             ("Cyberpunk 2077", &["Cyberpunk2077.exe"][..]),
             ("GTA V", &["GTA5.exe", "gtavicecity.exe"][..]),
-            ("Warhammer 40,000: Rogue Trader", &["RogueTrader.exe", "RogueTrader-Win64-Shipping.exe"][..]),
+            (
+                "Warhammer 40,000: Rogue Trader",
+                &["RogueTrader.exe", "RogueTrader-Win64-Shipping.exe"][..],
+            ),
         ];
         for (game_name, process_names) in common_games {
             for process_name in *process_names {
@@ -87,7 +93,10 @@ impl GameDetector {
             let name = process.name();
             let name_lower = name.to_string_lossy().to_lowercase();
             if let Some(game_name) = index.get(&name_lower) {
-                let exe_path = process.exe().map(|p| p.display().to_string()).unwrap_or_default();
+                let exe_path = process
+                    .exe()
+                    .map(|p| p.display().to_string())
+                    .unwrap_or_default();
                 return Some(GameInfo {
                     name: game_name.clone(),
                     exe: exe_path.clone(),

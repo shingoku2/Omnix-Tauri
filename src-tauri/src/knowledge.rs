@@ -57,10 +57,7 @@ fn tf(tokens: &[String]) -> HashMap<String, f64> {
     for t in tokens {
         *counts.entry(t.clone()).or_insert(0) += 1;
     }
-    counts
-        .into_iter()
-        .map(|(k, v)| (k, v as f64 / n))
-        .collect()
+    counts.into_iter().map(|(k, v)| (k, v as f64 / n)).collect()
 }
 
 fn index_base_dir() -> PathBuf {
@@ -94,7 +91,10 @@ fn save_index_for_game(game_profile_id: &str, data: &IndexData) -> Result<(), St
     Ok(())
 }
 
-fn build_idf(docs: &[(KnowledgeChunk, Vec<f64>)], vocabulary: &HashMap<String, usize>) -> HashMap<String, f64> {
+fn build_idf(
+    docs: &[(KnowledgeChunk, Vec<f64>)],
+    vocabulary: &HashMap<String, usize>,
+) -> HashMap<String, f64> {
     let n = docs.len() as f64;
     if n == 0.0 {
         return HashMap::new();
@@ -103,7 +103,11 @@ fn build_idf(docs: &[(KnowledgeChunk, Vec<f64>)], vocabulary: &HashMap<String, u
     for (_, vec) in docs {
         for (i, &v) in vec.iter().enumerate() {
             if v > 0.0 {
-                if let Some(token) = vocabulary.iter().find(|(_, &idx)| idx == i).map(|(k, _)| k.clone()) {
+                if let Some(token) = vocabulary
+                    .iter()
+                    .find(|(_, &idx)| idx == i)
+                    .map(|(k, _)| k.clone())
+                {
                     *df.entry(token).or_insert(0) += 1;
                 }
             }
@@ -115,7 +119,10 @@ fn build_idf(docs: &[(KnowledgeChunk, Vec<f64>)], vocabulary: &HashMap<String, u
 }
 
 /// Build IDF from chunk texts (so new chunks are included when recomputing).
-fn build_idf_from_chunks(docs: &[(KnowledgeChunk, Vec<f64>)], vocabulary: &HashMap<String, usize>) -> HashMap<String, f64> {
+fn build_idf_from_chunks(
+    docs: &[(KnowledgeChunk, Vec<f64>)],
+    vocabulary: &HashMap<String, usize>,
+) -> HashMap<String, f64> {
     let n = docs.len() as f64;
     if n == 0.0 {
         return HashMap::new();
@@ -134,7 +141,11 @@ fn build_idf_from_chunks(docs: &[(KnowledgeChunk, Vec<f64>)], vocabulary: &HashM
         .collect()
 }
 
-fn doc_vector(chunk: &KnowledgeChunk, vocabulary: &HashMap<String, usize>, idf: &HashMap<String, f64>) -> Vec<f64> {
+fn doc_vector(
+    chunk: &KnowledgeChunk,
+    vocabulary: &HashMap<String, usize>,
+    idf: &HashMap<String, f64>,
+) -> Vec<f64> {
     let tokens = tokenize(&chunk.text);
     let tf_map = tf(&tokens);
     let mut vec = vec![0.0; vocabulary.len()];

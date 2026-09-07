@@ -36,9 +36,7 @@ fn default_overlay_mode() -> String {
 impl GameProfile {
     pub fn matches_executable(&self, exe_name: &str) -> bool {
         let exe_lower = exe_name.to_lowercase();
-        self.exe_names
-            .iter()
-            .any(|e| e.to_lowercase() == exe_lower)
+        self.exe_names.iter().any(|e| e.to_lowercase() == exe_lower)
     }
 }
 
@@ -76,6 +74,8 @@ impl GameProfileStore {
     }
 
     pub fn get_by_exe(&self, exe_name: &str) -> Option<&GameProfile> {
-        self.profiles.iter().find(|p| p.matches_executable(exe_name))
+        self.profiles
+            .iter()
+            .find(|p| p.matches_executable(exe_name))
     }
 }

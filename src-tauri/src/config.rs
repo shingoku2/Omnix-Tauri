@@ -43,7 +43,12 @@ pub fn validate_ollama_base_url(url_str: &str) -> Result<(), String> {
     match url.scheme() {
         "http" | "https" => {}
         "file" => return Err("Ollama base URL cannot use file: scheme".to_string()),
-        other => return Err(format!("Ollama base URL must use http or https, got: {}", other)),
+        other => {
+            return Err(format!(
+                "Ollama base URL must use http or https, got: {}",
+                other
+            ))
+        }
     }
     let host = url.host_str().ok_or("Ollama base URL must have a host")?;
     let host_lower = host.to_lowercase();

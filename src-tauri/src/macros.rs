@@ -57,9 +57,14 @@ fn validate_macro_id(id: &str) -> Result<(), String> {
     if id.contains('/') || id.contains('\\') || id.contains("..") || id.starts_with('.') {
         return Err("Macro ID cannot contain path segments (/, \\, or .)".to_string());
     }
-    let valid = id.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-');
+    let valid = id
+        .chars()
+        .all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '-');
     if !valid {
-        return Err("Macro ID may only contain letters, numbers, underscores, and hyphens [a-zA-Z0-9_-]".to_string());
+        return Err(
+            "Macro ID may only contain letters, numbers, underscores, and hyphens [a-zA-Z0-9_-]"
+                .to_string(),
+        );
     }
     Ok(())
 }
@@ -172,11 +177,17 @@ fn key_press(key: &str) -> Result<(), String> {
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
     let (modifiers, main_key) = parse_key(key);
     for m in &modifiers {
-        enigo.key(key_from_str(m), Direction::Press).map_err(|e| e.to_string())?;
+        enigo
+            .key(key_from_str(m), Direction::Press)
+            .map_err(|e| e.to_string())?;
     }
-    enigo.key(key_from_str(&main_key), Direction::Click).map_err(|e| e.to_string())?;
+    enigo
+        .key(key_from_str(&main_key), Direction::Click)
+        .map_err(|e| e.to_string())?;
     for m in modifiers.iter().rev() {
-        enigo.key(key_from_str(m), Direction::Release).map_err(|e| e.to_string())?;
+        enigo
+            .key(key_from_str(m), Direction::Release)
+            .map_err(|e| e.to_string())?;
     }
     Ok(())
 }
@@ -186,9 +197,13 @@ fn key_down(key: &str) -> Result<(), String> {
     let (modifiers, main_key) = parse_key(key);
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
     for m in &modifiers {
-        enigo.key(key_from_str(m), Direction::Press).map_err(|e| e.to_string())?;
+        enigo
+            .key(key_from_str(m), Direction::Press)
+            .map_err(|e| e.to_string())?;
     }
-    enigo.key(key_from_str(&main_key), Direction::Press).map_err(|e| e.to_string())?;
+    enigo
+        .key(key_from_str(&main_key), Direction::Press)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -196,9 +211,13 @@ fn key_up(key: &str) -> Result<(), String> {
     use enigo::{Direction, Enigo, Keyboard, Settings};
     let (modifiers, main_key) = parse_key(key);
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
-    enigo.key(key_from_str(&main_key), Direction::Release).map_err(|e| e.to_string())?;
+    enigo
+        .key(key_from_str(&main_key), Direction::Release)
+        .map_err(|e| e.to_string())?;
     for m in modifiers.iter().rev() {
-        enigo.key(key_from_str(m), Direction::Release).map_err(|e| e.to_string())?;
+        enigo
+            .key(key_from_str(m), Direction::Release)
+            .map_err(|e| e.to_string())?;
     }
     Ok(())
 }
@@ -261,8 +280,12 @@ fn mouse_click(button: &str) -> Result<(), String> {
         _ => Button::Left,
     };
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
-    enigo.button(b, Direction::Press).map_err(|e| e.to_string())?;
-    enigo.button(b, Direction::Release).map_err(|e| e.to_string())?;
+    enigo
+        .button(b, Direction::Press)
+        .map_err(|e| e.to_string())?;
+    enigo
+        .button(b, Direction::Release)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -270,7 +293,9 @@ fn mouse_click(button: &str) -> Result<(), String> {
 fn mouse_move(x: i32, y: i32) -> Result<(), String> {
     use enigo::{Coordinate, Enigo, Mouse, Settings};
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
-    enigo.move_mouse(x, y, Coordinate::Abs).map_err(|e| e.to_string())?;
+    enigo
+        .move_mouse(x, y, Coordinate::Abs)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -278,6 +303,8 @@ fn mouse_move(x: i32, y: i32) -> Result<(), String> {
 fn mouse_scroll(length: i32) -> Result<(), String> {
     use enigo::{Axis, Enigo, Mouse, Settings};
     let mut enigo = Enigo::new(&Settings::default()).map_err(|e| e.to_string())?;
-    enigo.scroll(length, Axis::Vertical).map_err(|e| e.to_string())?;
+    enigo
+        .scroll(length, Axis::Vertical)
+        .map_err(|e| e.to_string())?;
     Ok(())
 }

@@ -24,7 +24,11 @@ pub struct AppState {
 
 #[tauri::command]
 fn get_config(state: State<AppState>) -> Result<AppConfig, String> {
-    state.config.lock().map_err(|e| e.to_string()).map(|g| g.clone())
+    state
+        .config
+        .lock()
+        .map_err(|e| e.to_string())
+        .map(|g| g.clone())
 }
 
 #[tauri::command]
@@ -68,7 +72,11 @@ async fn send_message(
         .map_err(|e| format!("Invalid Ollama URL: {}", e))?;
     let ollama_url = config.ollama_base_url.clone();
     let model = config.ollama_model.clone();
-    let current_game = state.game_detector.lock().ok().and_then(|mut d| d.current_game());
+    let current_game = state
+        .game_detector
+        .lock()
+        .ok()
+        .and_then(|mut d| d.current_game());
     let game_context = current_game
         .as_ref()
         .map(|g| format!("The user is currently playing: {}. Give relevant, game-specific advice when possible.", g.name))
@@ -133,7 +141,12 @@ fn get_running_processes(state: State<AppState>) -> Result<Vec<String>, String> 
 
 #[tauri::command]
 async fn list_ollama_models(state: State<'_, AppState>) -> Result<Vec<String>, String> {
-    let url = state.config.lock().map_err(|e| e.to_string())?.ollama_base_url.clone();
+    let url = state
+        .config
+        .lock()
+        .map_err(|e| e.to_string())?
+        .ollama_base_url
+        .clone();
     let inner = tauri::async_runtime::spawn_blocking(move || {
         let client = OllamaClient::new(url);
         client.list_models().map_err(|e| e.to_string())
@@ -204,7 +217,10 @@ fn knowledge_search(query: String, top_k: Option<usize>) -> Result<Vec<String>, 
 }
 
 #[tauri::command]
-fn knowledge_add_chunks(game_profile_id: String, chunks: Vec<knowledge::KnowledgeChunk>) -> Result<(), String> {
+fn knowledge_add_chunks(
+    game_profile_id: String,
+    chunks: Vec<knowledge::KnowledgeChunk>,
+) -> Result<(), String> {
     knowledge::add_chunks(&game_profile_id, chunks)
 }
 
